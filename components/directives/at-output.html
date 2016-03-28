@@ -1,0 +1,12 @@
+<form class="form-inline">
+  <input ng-model="key" type="text" class="form-control" placeholder="Output Key" style="width:18%"/>
+  <span style="font-size:18px">shows</span>
+  <div class="form-group" style="width:20%">
+    <select class="form-control" ng-model="type" ng-options="typeOut for typeOut in output.typeOuts" style="width:100%">
+      <option value="{{typeOut}}">{{typeOut}}</option>
+    </select>
+  </div>
+  <span style="font-size:18px">that</span>
+  <input ng-model="desc" type="text" class="form-control" placeholder="Description" style="width:27%"/>
+  <button class="btn btn-primary" ng-class="{disabled: !active}" ng-click="add({type:'output', object:{key:key, typeOut:type, desc:desc}})" type="submit">Add Output</button>
+</form>

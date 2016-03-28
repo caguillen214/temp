@@ -1,0 +1,21 @@
+<form class="form-inline">
+  <div class="form-group" style="width:22%">
+    <select class="form-control" ng-model="act" ng-options="action for action in navigation.actions" style="width:100%">
+      <option value="{{action}}">{{action}}</option>
+    </select>
+  </div>
+  <span style="font-size:20px">on</span>
+  <div class="form-group" style="width:21%">
+    <select class="form-control" ng-model="obj" ng-options="object for object in navigation.objects" style="width:100%"  ng-click="navigation.reloadNavigations()">
+      <option value="{{object}}">{{object}}</option>
+    </select>
+  </div>
+  <span style="font-size:20px">goes to</span>
+  <div class="form-group" style="width:20%">
+    <select class="form-control" ng-model="res" ng-options="result for result in navigation.results" style="width:100%">
+      <option value="{{result}}">{{result}}</option>
+    </select>
+  </div>
+  <button class="btn btn-primary" ng-class="{disabled: !active}" type="submit" style="width:18%;padding:6px 5px;"
+    ng-click="add({type:'navigation', object:{action:act, object:obj, result:res, key:'nav'+act+''+obj}})" >Add Navigation</button>
+</form>

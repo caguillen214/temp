@@ -1,0 +1,46 @@
+<!doctype html>
+<html ng-app="atTuple">
+  <head>
+    <meta charset="utf-8">
+    <title>Tuple</title> 
+    <meta charset="utf-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <link rel="icon" type="assets/images/tupleFav.png">
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+
+
+    <link rel="stylesheet" href="app.css">
+    
+    <!--      Bower Components         -->
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap/js/tooltip.js"></script>
+    <!--<script src="bower_components/bootstrap/js/popover.js"></script>-->
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+    
+    <!--      Internal Components         -->
+    <script src="components/main/main.js"></script>
+    <script src="components/main/main-controller.js"></script>
+    <script src="components/services/directive-service/directive-service.js"></script>
+    <script src="components/services/server-service/server-service.js"></script>
+    
+    <!--      Directive Components         -->
+    <script src="components/directives/at-directives.js"></script>
+    <script src="components/directives/at-action.js"></script>
+    <script src="components/directives/at-input.js"></script>
+    <script src="components/directives/at-output.js"></script>
+    <script src="components/directives/at-asset.js"></script>
+    <script src="components/directives/at-navigation.js"></script>
+    <script src="components/directives/at-build.js"></script>
+
+    <script src="app.js"></script>
+  </head>
+  <body>
+    <div ng-view class="v-span">
+
+    </div>
+  </body>
+</html>
+

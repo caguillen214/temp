@@ -1,0 +1,15 @@
+<form class="form-inline">
+  <div class="form-group" style="width:20%">
+    <select class="form-control" ng-model="buildType" ng-options="link for link in ['Build In', 'Build Out']" style="width:100%">
+      <option value="{{link}}">{{link}}</option>
+    </select>
+  </div>
+  <span style="font-size:18px">that</span>
+  <input ng-model="desc" type="text" class="form-control" placeholder="Description" style="width:33%"/>
+  <div class="form-group" style="width:24%">
+    <select class="form-control" ng-model="asset" ng-options="link for link in build['build-assets']" style="width:100%">
+      <option value="{{link}}">{{link}}</option>
+    </select>
+  </div>
+  <button class="btn btn-primary" ng-class="{disabled: !active}" ng-click="add({type:'build', object:{key:buildType, buildType:buildType, desc:desc, asset:asset}})" type="submit">Add Build</button>
+</form>

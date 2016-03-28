@@ -1,0 +1,271 @@
+<div ng-include="'components/statics/header.html'"></div>
+<div class="container" style="margin-top: 80px">
+  <div class="row">
+    <div class="col-md-6 col-sm-6 left-panel">
+      <div class="row">
+        <div class="col-md-12 col-sm-12">
+          <div class="row">
+            <form class="form-inline" ng-if="fileName.length == 0 && project">
+              <div class="form-group" style="width:79%">
+                <input ng-model="fileName" type="text" class="form-control" placeholder="File Name:" style="width:100%">
+                  <!-- typeahead="file for file in filesList | filter:fileName | limitTo:8" -->
+              </div>
+              <button type="submit" class="btn btn-primary" style="width:19%" 
+                ng-click="setFileName(project, fileName); getNamesOf('projects');getNamesOf('files')">Create File</button>
+            </form>
+            <div class="alert alert-danger col-md-12 col-sm-12 text-center" ng-if="!project" role="alert" style="width:99%">PLEASE SELECT A PROJECT BEFORE CONTINUING</div>
+            <div ng-if="fileName.length">
+              <div>
+                <div style="display:inline-block;width:64%;">
+                  <h3 style="display:inline-block">{{fileName}}</h3> 
+                  <small><a href="" ng-click="confirmDelete()"> delete</a></small>
+                </div>
+                <div style="display:inline-block;width:35%;">
+                  <button type="button" class="btn btn-info" ng-click="showFunc()">
+                    <span ng-if="!showImage">Show Image</span>
+                    <span ng-if="showImage">Hide Image</span>
+                  </button>
+                  <button class="btn btn-primary" ng-click="saveFile();">Save File</button>
+                </div>
+              </div>
+              <div><b>Purpose:</b></div>
+              <textarea style="width:98%" ng-model="doc.Purpose"></textarea>
+            </div>
+            <hr ng-style="{marginTop: (project)?'15px':'75px'}">
+          </div>
+          <div class="row" ng-repeat="pType in propertyTypes" >
+            <div style="margin-top:10px"  ng-click="selected[pType] = !selected[pType]">
+              <h3 style="display:inline-block;width:95%;margin-top:0px">
+                {{titleCase(pType)}}s: <span ng-if="atDirApi.getTypeLength(pType) > 0">({{atDirApi.getTypeLength(pType)}})</span>
+              </h3>
+              <span class="glyphicon" ng-class="{'glyphicon-chevron-right':selected[pType], 'glyphicon-chevron-down':!selected[pType]}" aria-hidden="true"></span>
+            </div>
+            <div ng-show="selected[pType]">
+              <hr class="light-hr">
+              <div ng-controller="DirectiveController">
+                <at-action ng-if="pType == 'action'" action="action" add-action="store(type, object)" active="project"></at-action>
+                <at-input ng-if="pType == 'input'" input="input" add-input="store(type, object)" active="project"></at-input>
+                <at-output ng-if="pType == 'output'" output="output" add-output="store(type, object)" active="project"></at-output>
+                <at-asset ng-if="pType == 'asset'" asset="asset" add-asset="store(type, object)" active="project"></at-asset>
+                <at-navigation ng-if="pType == 'navigation'" navigation="navigation" add-navigation="store(type, object)" active="project"></at-navigation>
+                <at-build ng-if="pType == 'build'" build="build" add-build="store(type, object)" active="project"></at-build>
+              </div>
+              <div style="margin-top:10px">
+                <ul>
+                  <li ng-repeat="prop in atDirApi.getTypeRay(pType)">
+                    <span ng-repeat="text in convert(pType, prop)">
+                      <span ng-if="!created[text] && $first && text.indexOf('gif') < 0">{{titleCase(text)}}</span>
+                      <span ng-if="!created[text] && !$first && text.indexOf('gif') < 0">{{text.toLowerCase()}}</span>
+                      <span ng-if="created[text]">
+                        <a href="" tooltip-html-unsafe="{{safeHtml(temp[text].body)}}" tooltip-trigger="mouseenter">{{temp[text].key}}</a>
+                      </span>
+                    </span>
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true" style="margin-left:10px;color:#900" ng-click="removeObj(pType,prop)"></span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <hr>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-sm-6 right-panel">
+      <div class="row">
+        <div class="col-md-12 col-sm-12" style="text-align:left">
+          <tabset>
+            <tab ng-repeat="tab in tabs" heading="{{tab.title}}" active="tab.active" disable="tab.disabled">
+            </tab>
+          </tabset>
+          <div ng-if="tabs[0].active">
+            <h2 ng-bind="doc.Name"></h2>
+            <img ng-if="doc.Name && showImage" ng-src="{{doc.URL}}"/>
+            <div ng-if="doc.Purpose.length && doc.Name">  
+              <h3>Purpose</h3>
+              <ul>
+                <li ng-bind="doc.Purpose"></li>
+              </ul>
+            </div>
+            <div ng-if="atDirApi.getTypeLength('input') > 0 || atDirApi.getTypeLength('output') > 0 || atDirApi.getTypeLength('asset') > 0">
+              <h3>Data</h3>
+              <div ng-if="atDirApi.getTypeLength('input') > 0">
+                <h4>Inputs</h4>
+                <div ng-repeat="inp in atDirApi.getGroup('Data', 'input')">
+                  <ul>
+                    <li>
+                      <b>Key:</b> {{inp.key}}
+                      <ul>
+                        <li><b>Type:</b> {{inp.type}}</li>
+                        <li ng-if="inp.restrictions">
+                          <b>Restrictions:</b>
+                          <ul >
+                            <li ng-repeat="(key, val) in inp.restrictions" ng-if="val !== null">
+                              <span ng-if="val !== true">{{key}}: {{val}}</span>
+                              <span ng-if="val === true">{{key}}</span>
+                            </li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div ng-if="atDirApi.getTypeLength('output') > 0">
+                <h4>Outputs</h4>
+                <div ng-repeat="out in atDirApi.getGroup('Data', 'output')">
+                  <ul>
+                    <li>
+                      <b>Key:</b> {{out.key}}
+                      <ul>
+                        <li><b>Output Type:</b> {{out.type}}</li>
+                        <li><b>Description:</b> {{out.desc}}</li>
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div ng-if="atDirApi.getTypeLength('asset') > 0"> 
+                <h4>Assets</h4>
+                <div ng-repeat="ass in atDirApi.getGroup('Data', 'asset')">
+                  <ul>
+                    <li>
+                      <b>Key:</b> {{ass.key}}
+                      <ul>
+                        <li><b>Used By:</b> {{ass.usedBy}}</li>
+                        <li><b>Description:</b> {{ass.desc}}</li>
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div ng-if="atDirApi.getTypeLength('action') > 0">
+              <h3>Actions</h3>
+              <div ng-repeat="act in atDirApi.getGroup('action')">
+                <ul>
+                  <li>
+                    <b>Key:</b> {{act.key}}
+                    <ul>
+                      <li><b>Action:</b> {{act.action}}</li>
+                      <li><b>Input Recieving:</b> {{act.object}}</li>
+                      <li><b>Resulting Output:</b> {{act.result}}</li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div ng-if="atDirApi.getTypeLength('navigation') > 0">
+              <h3>Navigation</h3>
+              <div ng-repeat="nav in atDirApi.getGroup('navigation')">
+                <ul>
+                  <li>
+                    <b>Key:</b> {{nav.key}}
+                    <ul>
+                      <li><b>Action:</b> {{nav.action}}</li>
+                      <li><b>Input Recieving:</b> {{nav.object}}</li>
+                      <li><b>Goes To:</b> {{nav.result}}</li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div ng-if="atDirApi.getTypeLength('build') > 0">
+              <h3>Builds</h3>
+              <div ng-repeat="build in atDirApi.getGroup('build')">
+                <h4>{{build.key}}</h4>
+                <ul>
+                  <li>Description: {{build.desc}}</li>
+                  <li>Asset: {{build.asset}}</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div ng-if="tabs[1].active">
+            <div ng-if="doc.Name">## {{doc.Name}}<br></div>
+            <div ng-if="doc.Name">![{{doc.Name}}]({{doc.URL}})<br></div>
+            <div ng-if="doc.Purpose.length">  
+              <div>### Purpose<br><br></div>
+              <div>- {{doc.Purpose}}<br><br></div>
+            </div>
+            <div ng-if="atDirApi.getTypeLength('input') > 0 || atDirApi.getTypeLength('output') > 0 || atDirApi.getTypeLength('asset') > 0">
+              <div>### Data<br><br></div>
+              <div ng-if="atDirApi.getTypeLength('input') > 0">
+                <div>#### Inputs<br><br></div>
+                <div ng-repeat="inp in atDirApi.getGroup('Data', 'input')">
+                  <div>- Key: {{inp.key}}</div>
+                    <div>&nbsp;&nbsp;- Type: {{inp.type}}<br><br></div>
+                    <div ng-if="inp.restrictions">
+                      <div>&nbsp;&nbsp;- Restrictions:<br><br></div>
+                      <div ng-repeat="(key, val) in inp.restrictions" ng-if="val !== null">
+                         <span ng-if="val !== true">&nbsp;&nbsp;&nbsp;&nbsp;- {{key}}: {{val}}</span>
+                         <span ng-if="val === true">&nbsp;&nbsp;&nbsp;&nbsp;- {{key}}</span>
+                         <br ng-if="$last">
+                      </div>
+                    </div>
+                </div>
+              </div>
+              <div ng-if="atDirApi.getTypeLength('output') > 0">
+                <div>#### Outputs<br><br></div>
+                <div ng-repeat="out in atDirApi.getGroup('Data', 'output')">
+                  <div>- Key: {{out.key}}</div> 
+                  <div>&nbsp;&nbsp;- Output Type: {{out.type}}</div>
+                  <div>&nbsp;&nbsp;- Description: {{out.desc}}<br><br></div>
+                </div>
+              </div>
+              <div ng-if="atDirApi.getTypeLength('asset') > 0"> 
+                <div>#### Assets<br><br></div>
+                <div ng-repeat="ass in atDirApi.getGroup('Data', 'asset')">
+                  <div>- Key: {{ass.key}} </div>
+                  <div>&nbsp;&nbsp;- Used By: {{ass.usedBy}}</div>
+                  <div>&nbsp;&nbsp;- Description: {{ass.desc}}<br><br></div>
+                </div>
+              </div>
+            </div>
+            <div ng-if="atDirApi.getTypeLength('action') > 0">
+              <div>### Actions<br><br></div>
+              <div ng-repeat="act in atDirApi.getGroup('action')">
+                <div>- Key: {{act.key}}</div>
+                <div>&nbsp;&nbsp;- Action: {{act.action}}</div>
+                <div>&nbsp;&nbsp;- Input Recieving: {{act.object}}</div>
+                <div>&nbsp;&nbsp;- Resulting Output: {{act.result}}<br><br></div>
+              </div>
+            </div>
+            <div ng-if="atDirApi.getTypeLength('navigation') > 0">
+              <div>### Navigation<br><br></div>
+              <div ng-repeat="nav in atDirApi.getGroup('navigation')">
+                <div>- Key: {{nav.key}}</div>
+                <div>&nbsp;&nbsp;- Action: {{nav.action}}</div>
+                <div>&nbsp;&nbsp;- Input Recieving: {{nav.object}}</div>
+                <div>&nbsp;&nbsp;- Goes To: {{nav.result}}<br><br></div>
+              </div>
+            </div>
+            <div ng-if="atDirApi.getTypeLength('build') > 0"> 
+              <div>### Builds<br><br></div>
+              <div ng-repeat="build in atDirApi.getGroup('build')">
+                <div>#### {{build.key}} <br><br></div>
+                <div>- Description: {{build.desc}}<br><br></div>
+                <div>- Asset: {{build.asset}}<br><br></div>
+              </div>
+            </div>
+          </div>
+          <div ng-if="tabs[2].active" id="tab2">
+            <div ng-bind-html="toJSON()"></div>
+          </div>
+          <div ng-if="tabs[3].active" style="text-align:center; padding:10px ">
+            <img ng-if="doc.Name" ng-src="{{doc.URL}}" onerror="this.src='assets/images/noimage.png'" />
+            <img ng-if="!doc.Name" src="assets/images/noimage.png" style="width:60%"/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+

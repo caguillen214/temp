@@ -1,0 +1,1 @@
+angular.module('atMain', ['atDirectives', 'atDirectiveService', 'ui.bootstrap', 'atServerService']);

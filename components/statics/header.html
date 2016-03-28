@@ -1,0 +1,72 @@
+<nav role="navigation" class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" data-toggle="collapse" data-target=".navbar-ex1-collapse" class="navbar-toggle">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span><span class="icon-bar"></span>
+      <span class="icon-bar"></span></button>
+      <a href="#/" class="navbar-brand">
+        <img src="assets/images/tupleLogo-Horz.png" style="width:auto; height: 40px; margin-top:-10px">
+      </a>
+    </div>
+    <div class="collapse navbar-collapse navbar-right navbar-ex1-collapse">
+      <ul class="nav navbar-nav">
+        <li>
+          <span class="dropdown" dropdown on-toggle="toggled(open)">
+            <a href class="dropdown-toggle" dropdown-toggle>
+              {{titleCase(project) || 'Project'}}
+            </a>
+            <ul class="dropdown-menu">
+              <li ng-repeat="choice in projectsList" ng-click="selectProject(choice, true)">
+                <a href>{{titleCase(choice)}}</a>
+              </li>
+            </ul>
+          </span>
+        </li>
+        <li><span><a href>></a></span></li>
+        <li>
+          <span class="dropdown" dropdown on-toggle="toggled(open)">
+            <a href class="dropdown-toggle" dropdown-toggle>
+              {{titleCase(fileName) || 'File'}}
+            </a>
+            <ul class="dropdown-menu">
+              <li ng-repeat="choice in filesList" ng-click="selectFile(choice, true)">
+                <a href>{{titleCase(choice)}}</a>
+              </li>
+              <li ng-if="!filesList.length && project"><a href>No files in project</a></li>
+              <li ng-if="!filesList.length && !project"><a href>No project selected</a></li>
+            </ul>
+          </span>
+        </li>
+        <li class="divider-vertical">
+          <span class="dropdown" dropdown on-toggle="toggled(open)" auto-close="outsideClick">
+            <a href class="dropdown-toggle" dropdown-toggle>
+              <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Create New
+            </a>
+            <ul class="dropdown-menu" style="width:250px">
+              <li style="padding:5px">
+                New Project:
+                <form class="form-inline">
+                  <input style="width:80%" ng-model="newProject" class="form-control" type="text" placeholder="Project Name"/>
+                  <button style="width:18%" class="btn btn-primary" ng-click="createNew('project',newProject);newProject=''">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                  </button>
+                </form>
+              </li>
+              <li style="padding:5px">
+                <span ng-if="project">New File:</span>
+                <span ng-if="!project" style="color:#900">Select a project:</span>
+                <form class="form-inline">
+                  <input style="width:80%" ng-model="newFile" class="form-control" type="text" placeholder="File Name"/>
+                  <button style="width:18%" class="btn btn-primary" ng-class="{disabled: !project}" ng-click="createNew('file', project, newFile);newFile=''">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true" ></span>
+                  </button>
+                </form>
+              </li>
+            </ul>
+          </span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

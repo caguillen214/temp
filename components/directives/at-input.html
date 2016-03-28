@@ -1,0 +1,76 @@
+<script type="text/ng-template" id="myModalContent.html">
+  <div class="modal-header">
+      <h3 class="modal-title">Create an Input Object</h3>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div ng-class="{'col-md-6': type=='Text' || type=='Password' || type=='Number' || type=='File', 'col-md-10 col-md-offset-1': type!='Text' && type!='Password' && type!='Number' && type!='File'}" ng-style="{'border-right': (type=='Text' || type=='Password' || type=='Number' || type=='File')?'1px solid #eee':'none'}">
+        <div class="form-group" style="width:100%">
+          <label >Input Key:</label>
+          <input class="form-control" type="Text" ng-model="inputKey"/>
+        </div>
+        <div class="form-group" style="width:100%">
+          <label for="typeInSelect">Input Type</label>
+          <select class="form-control" ng-model="type" id="typeInSelect" ng-options="typeIn for typeIn in input.typeIns" style="width:100%">
+            <option value="{{typeIn}}">{{typeIn}}</option>
+          </select>
+        </div>
+        <div class="form-group" style="width:100%" ng-if="type=='Text' || type=='Password' || type=='Number' || type=='File'">
+          <label for="restrictionSelect">Restriction Options:</label>
+          <div ng-repeat="rest in input.restrictions[type]">
+            <input type="checkbox" ng-model="restrictsSelected[type][rest]" id="restrictionSelect">
+            {{rest}}
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6" ng-style="{display: (type=='Text' || type=='Password' || type=='Number' || type=='File')?'block':'none'}">
+        <label>Restriction Details:</label>
+        <div ng-repeat="(restKey, restVal) in restrictsSelected[type]" ng-if="restVal">
+          <div ng-if="restKey == 'Minimum Size'">
+            Minimum Size: <br>
+            <input class="form-control" style="width:80%;display:inline" type="number" ng-model="restrictionDetails[type]['Minimum Size']"/> in KB
+          </div>
+          <div ng-if="restKey == 'Maximum Size'">
+            Maximum Size: <br>
+            <input class="form-control" style="width:80%;display:inline" type="number" ng-model="restrictionDetails[type]['Maximum Size']"/> in KB
+          </div>
+          <div ng-if="restKey == 'File Type'">
+            File Type:
+            <select class="form-control" ng-model="restrictionDetails[type]['File Type']" ng-options="fType for fType in fileTypes" style="width:100%">
+              <option value="{{fType}}">{{fType}}</option>
+            </select> 
+          </div>
+          <div ng-if="restKey == 'Minimum Number'">
+            Minimum Number: <br>
+            <input class="form-control" style="width:80%;display:inline" type="number" ng-model="restrictionDetails[type]['Minimum Number']"/>
+          </div>
+          <div ng-if="restKey == 'Maximum Number'">
+            Maximum Number: <br>
+            <input class="form-control" style="width:80%;display:inline" type="number" ng-model="restrictionDetails[type]['Maximum Number']"/>
+          </div>
+          <div ng-if="restKey == 'Exact Number'">
+            Exact Number: <br>
+            <input class="form-control" style="width:80%;display:inline" type="number" ng-model="restrictionDetails[type]['Exact Number']"/>
+          </div>
+          <div ng-if="restKey == 'Exact Text'">
+            Exact Text: <br>
+            <input class="form-control" style="width:80%;display:inline" type="Text" ng-model="restrictionDetails[type]['Exact Text']"/>
+          </div>
+          <div ng-if="restKey == 'Regular Expression'">
+            Regular Expression: <br>
+            <input class="form-control" style="width:80%;display:inline" type="Text" ng-model="restrictionDetails[type]['Regular Expression']"/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" ng-click="cancel()">Cancel</button>
+    <button class="btn btn-primary" ng-click="ok()">Add Input</button>
+  </div>
+</script>
+<div class="row">
+  <div class="col-md-3 col-md-offset-9">
+    <button class="btn btn-primary" ng-class="{disabled: !active}" ng-click="input.openModal()" style="margin-left:15px">Create Input</button>
+  </div>
+</div>

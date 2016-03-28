@@ -1,0 +1,21 @@
+<form class="form-inline">
+  <div class="form-group" style="width:23%">
+    <select class="form-control" ng-model="act" ng-options="action for action in action.actions" style="width:100%">
+      <option value="{{action}}">{{action}}</option>
+    </select>
+  </div>
+  <span style="font-size:20px">on</span>
+  <div class="form-group" style="width:23%">
+    <select class="form-control" ng-model="obj" ng-options="object for object in action.objects" style="width:100%" ng-click="action.reloadActions()" >
+      <option value="{{object}}">{{object}}</option>
+    </select>
+  </div>
+  <span style="font-size:20px">does</span>
+  <div class="form-group" style="width:23%">
+    <select class="form-control" ng-model="res" ng-options="result for result in action.results" style="width:100%" ng-click="action.reloadActions()" >
+      <option value="{{result}}">{{result}}</option>
+    </select>
+  </div>
+  <button class="btn btn-primary" type="submit" style="width:16%" ng-class="{disabled: !active}"
+    ng-click="add({type:'action', object:{action:act, object:obj, result:res, key:'act '+act+''+obj}})" >Add Action</button>
+</form>

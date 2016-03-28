@@ -1,0 +1,194 @@
+TODO:
+
+Deleting an element and readding it gives error sayign do not create duplicate keys
+
+
+{
+  "Name": "1-0_OnboardingFirstLoad",
+  "URL": "projects/example/file-images/1-0_OnboardingFirstLoad.png",
+  "Purpose": "Sign-up screen for users",
+  "Transitions": {
+    "Build Ins": {},
+    "Build Outs": {}
+  },
+  "Data": {
+    "input": [
+      {
+        "type": "Text",
+        "restrictions": {
+          "Exact Text": null,
+          "Uppercase Only": null,
+          "Lowercase Only": null,
+          "Mixed Case": true,
+          "Alphabetic": true,
+          "Alphanumeric": null,
+          "Alphanumeric + Symbols": null,
+          "Symbols Only": null,
+          "Title Case": null,
+          "Regular Expression": null
+        },
+        "key": "FirstName"
+      },
+      {
+        "type": "Text",
+        "restrictions": {
+          "Exact Text": null,
+          "Uppercase Only": null,
+          "Lowercase Only": null,
+          "Mixed Case": true,
+          "Alphabetic": true,
+          "Alphanumeric": null,
+          "Alphanumeric + Symbols": null,
+          "Symbols Only": null,
+          "Title Case": null,
+          "Regular Expression": null
+        },
+        "key": "LastName"
+      },
+      {
+        "type": "Button",
+        "key": "GetStarted"
+      },
+      {
+        "type": "Email",
+        "key": "Email"
+      }
+    ],
+    "output": [
+      {
+        "key": "GetStartedSucces",
+        "typeOut": "Pop-Up",
+        "desc": "Shows successful entry of inputs"
+      }
+    ],
+    "asset": []
+  },
+  "action": [
+    {
+      "action": "Tap",
+      "object": "GetStarted",
+      "result": "GetStartedSucces",
+      "key": "act TapGetStarted"
+    }
+  ],
+  "navigation": [
+    {
+      "action": "Tap",
+      "object": "GetStarted",
+      "result": "1-0_OnboardingProfileChooser",
+      "key": "navTapGetStarted"
+    }
+  ]
+}
+
+
+////DiRECIVES
+{
+  "temp": {
+    "GetStarted": {
+      "key": "GetStarted",
+      "body": "<div style=\"font-size:16px\"><b>GetStarted</b></div><hr><div><b>Type:</b> Button</div>"
+    },
+    "GetStartedSucces": {
+      "key": "GetStartedSucces",
+      "body": "<div style=\"font-size:16px\"><b>GetStartedSucces</b></div><hr><div><b>Type:</b> Pop-Up</div><div><b>Description:</b><p>Shows successful entry of inputs</p></div>"
+    },
+    "1-0_OnboardingProfileChooser": {
+      "key": "1-0_OnboardingProfileChooser",
+      "body": "<img src=\"projects/Example2/file-images/1-0_OnboardingProfileChooser.png\" width=\"180px\" height:\"auto\">"
+    }
+  },
+  "created": {
+    "GetStarted": true,
+    "GetStartedSucces": true,
+    "1-0_OnboardingProfileChooser": true
+  },
+  "objDB": {
+    "input": [
+      {
+        "type": "Text",
+        "restrictions": {
+          "Exact Text": null,
+          "Uppercase Only": null,
+          "Lowercase Only": null,
+          "Mixed Case": true,
+          "Alphabetic": true,
+          "Alphanumeric": null,
+          "Alphanumeric + Symbols": null,
+          "Symbols Only": null,
+          "Title Case": null,
+          "Regular Expression": null
+        },
+        "key": "FirstName"
+      },
+      {
+        "type": "Text",
+        "restrictions": {
+          "Exact Text": null,
+          "Uppercase Only": null,
+          "Lowercase Only": null,
+          "Mixed Case": true,
+          "Alphabetic": true,
+          "Alphanumeric": null,
+          "Alphanumeric + Symbols": null,
+          "Symbols Only": null,
+          "Title Case": null,
+          "Regular Expression": null
+        },
+        "key": "LastName"
+      },
+      {
+        "type": "Button",
+        "key": "GetStarted"
+      },
+      {
+        "type": "Email",
+        "key": "Email"
+      }
+    ],
+    "output": [
+      {
+        "key": "GetStartedSucces",
+        "typeOut": "Pop-Up",
+        "desc": "Shows successful entry of inputs"
+      }
+    ],
+    "action": [
+      {
+        "action": "Tap",
+        "object": "GetStarted",
+        "result": "GetStartedSucces",
+        "key": "act TapGetStarted"
+      }
+    ],
+    "asset": [],
+    "navigation": [
+      {
+        "action": "Tap",
+        "object": "GetStarted",
+        "result": "1-0_OnboardingProfileChooser",
+        "key": "navTapGetStarted"
+      }
+    ],
+    "build": []
+  },
+  "existsHash": {
+    "input": {
+      "FirstName": 0,
+      "LastName": 1,
+      "GetStarted": 2,
+      "Email": 3
+    },
+    "output": {
+      "GetStartedSucces": 0
+    },
+    "action": {
+      "act TapGetStarted": 0
+    },
+    "asset": {},
+    "navigation": {
+      "navTapGetStarted": 0
+    },
+    "build": {}
+  }
+}
